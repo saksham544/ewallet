@@ -1,0 +1,86 @@
+let currentUser = null;
+
+// Load user data
+function getUsers() {
+  return JSON.parse(localStorage.getItem("users")) || {};
+}
+
+function saveUsers(users) {
+  localStorage.setItem("users", JSON.stringify(users));
+}
+
+// Login/Register
+function login() {
+  let username = document.getElementById("username").value;
+  if (!username) return alert("Enter username");
+
+  let users = getUsers();
+
+  if (!users[username]) {
+    users[username] = { balance: 0, history: [] };
+  }
+
+  currentUser = username;
+  saveUsers(users);
+
+  document.getElementById("auth").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+
+  updateUI();
+}
+
+// Update UI
+function updateUI() {
+  let users = getUsers();
+  let user = users[currentUser];
+
+  document.getElementById("welcome").innerText = "Welcome " + currentUser;
+  document.getElementById("balance").innerText = user.balance;
+
+  let history = document.getElementById("history");
+  history.innerHTML = "";
+
+  user.history.forEach(item => {
+    let li = document.createElement("li");
+    li.innerText = item;
+    history.appendChild(li);
+  });
+}
+
+// Add Money
+function addMoney() {
+  let amount = parseInt(document.getElementById("addAmount").value);
+  if (!amount) return alert("Enter amount");
+
+  let users = getUsers();
+  users[currentUser].balance += amount;
+  users[currentUser].history.push("Added Rs " + amount);
+
+  saveUsers(users);
+  updateUI();
+}
+
+// Send Money
+function sendMoney() {
+  let receiver = document.getElementById("receiver").value;
+  let amount = parseInt(document.getElementById("sendAmount").value);
+
+  let users = getUsers();
+
+  if (!users[receiver]) return alert("User not found");
+  if (users[currentUser].balance < amount) return alert("Insufficient balance");
+
+  users[currentUser].balance -= amount;
+  users[receiver].balance += amount;
+
+  users[currentUser].history.push("Sent Rs " + amount + " to " + receiver);
+  users[receiver].history.push("Received Rs " + amount + " from " + currentUser);
+
+  saveUsers(users);
+  updateUI();
+}
+
+// Logout
+function logout() {
+  location.reload();
+}
