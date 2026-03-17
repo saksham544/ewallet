@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>eWallet App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>💸 eWallet</h1>
+
+  <!-- Login/Register -->
+  <div id="auth">
+    <input type="text" id="username" placeholder="Enter Username">
+    <button onclick="login()">Login / Register</button>
+  </div>
+
+  <!-- App -->
+  <div id="app" class="hidden">
+    <h2 id="welcome"></h2>
+    <h3>Balance: Rs <span id="balance">0</span></h3>
+
+    <!-- Add Money -->
+    <input type="number" id="addAmount" placeholder="Add Money">
+    <button onclick="addMoney()">Add</button>
+
+    <!-- Send Money -->
+    <input type="text" id="receiver" placeholder="Receiver Username">
+    <input type="number" id="sendAmount" placeholder="Amount">
+    <button onclick="sendMoney()">Send</button>
+
+    <h3>Transactions</h3>
+    <ul id="history"></ul>
+
+    <button onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
